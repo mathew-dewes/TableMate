@@ -10,6 +10,8 @@ export default function NavBar(){
                 <Link href={'/dashboard'}>Dashboard</Link>
                 <Link href={'/'}>Home</Link>
                 <Link href={'/hello'}>Slug</Link>
+                <Link href={'/login'}>Login</Link>
+                <Link href={'/register'}>Register</Link>
                 <ThemeToggle/>
             </ul>
         </div>
