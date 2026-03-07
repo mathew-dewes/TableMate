@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Inter, Figtree } from "next/font/google";
 import "./globals.css";
-import NavBar from "./components/Navbar";
+import NavBar from "../components/web/Navbar";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "../components/theme-provider";
 
-const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
+const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
+
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +30,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
+    <html suppressHydrationWarning lang="en" className={cn(jetbrainsMono.variable, "font-sans", figtree.variable)}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className="mt-10 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+             <main className="mt-10 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8">
           <NavBar />
           {children}
         </main>
+
+        </ThemeProvider>
+       
 
       </body>
     </html>
