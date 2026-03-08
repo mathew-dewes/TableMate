@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,6 +23,10 @@ import z from "zod"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginFormSchema } from "@/lib/schema"
+import { useTransition } from "react"
+import { useRouter } from "next/navigation"
+import { loginUser } from "@/lib/auth/actions"
+import { toast } from "sonner"
 
 
 
@@ -28,6 +34,11 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  
+    const [isPending, startTransition] = useTransition();
+  
+    const router = useRouter()
 
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -41,7 +52,17 @@ export function LoginForm({
 
 
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    console.log(values);
+    startTransition((async () => {
+      const res = await loginUser(values);
+      
+      if (res?.success){
+        toast.success(res.message);
+        router.push('/dasboard')
+
+      } else {
+        toast.error(res?.message)
+      }
+    }))
 
   }
 
@@ -135,7 +156,7 @@ export function LoginForm({
 
 
               <Field>
-                <Button type="submit">Login</Button>
+                <Button disabled={isPending} type="submit">Login</Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link href="/register">Register</Link>
                 </FieldDescription>

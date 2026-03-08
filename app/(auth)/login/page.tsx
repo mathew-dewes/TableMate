@@ -1,4 +1,4 @@
-"use client"
+
 
 
 import { GalleryVerticalEndIcon } from "lucide-react"

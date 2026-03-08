@@ -23,11 +23,19 @@ import { Controller, useForm } from "react-hook-form"
 import { registerFormSchema } from "@/lib/schema"
 import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { registerWithEmailPassword } from "@/lib/auth/actions";
+import { useTransition } from "react";
+import { toast } from "sonner";
+
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const [isPending, startTransition] = useTransition();
+
+
 
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -42,7 +50,18 @@ export function RegisterForm({
   });
 
   function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    console.log(values);
+
+    startTransition((async () => {
+      const res = await registerWithEmailPassword(values);
+      
+      if (res?.success){
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message)
+      }
+    }))
+
+
 
   }
 
@@ -213,7 +232,7 @@ export function RegisterForm({
 
 
               <Field>
-                <Button type="submit">Register</Button>
+                <Button disabled={isPending} type="submit">Register</Button>
                 <FieldDescription className="text-center">
                   Already have an account? <Link href="/login">Login</Link>
                 </FieldDescription>
