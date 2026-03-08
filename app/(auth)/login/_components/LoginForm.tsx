@@ -57,7 +57,7 @@ export function LoginForm({
       
       if (res?.success){
         toast.success(res.message);
-        router.push('/dasboard')
+        router.push('/dashboard')
 
       } else {
         toast.error(res?.message)
@@ -134,6 +134,7 @@ export function LoginForm({
                       <Link
                         href="/login/forgot-password"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
+                          tabIndex={-1}
                       >
                         Forgot your password?
                       </Link>

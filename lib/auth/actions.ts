@@ -10,6 +10,7 @@ export async function signOut(){
     await supabase.auth.signOut();
 
     return {success: true, message: 'Signout successful'}
+
     } catch (error) {
         console.log(error);
     return {success: false, message: 'Signout failed'}
