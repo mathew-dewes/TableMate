@@ -13,7 +13,11 @@ export async function getBusinessBySlug(slug: string){
  
 
     if (error){
-        return {success: false, message: 'There was an error fetching this data'}
+        console.log("Error:", error);
+        
+        return {success: false, error: error};
+       
+        
     }
 
     return {success: true, data}
