@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,17 +12,41 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { Controller, useForm } from "react-hook-form"
+import { registerFormSchema } from "@/lib/schema"
+import z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+
+  const form = useForm<z.infer<typeof registerFormSchema>>({
+    resolver: zodResolver(registerFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
+  });
+
+  function onSubmit(values: z.infer<typeof registerFormSchema>) {
+    console.log(values);
+
+  }
+
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -31,7 +57,7 @@ export function RegisterForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form id="register-form" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
                 <Button variant="outline" type="button">
@@ -56,45 +82,136 @@ export function RegisterForm({
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
-              <Field>
-                <FieldLabel htmlFor="firstName">First name</FieldLabel>
-                <Input
-                  id="firstName"
-                  type="email"
-                  placeholder="John"
-                  required
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="lastName">Last name</FieldLabel>
-                <Input
-                  id="lastName"
-                  type="text"
-                  placeholder="Smith"
-                  required
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
+              <Controller
+                control={form.control}
+                name="firstName"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="firstName">First name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="firstName"
+                      type="text"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="John"
+                      autoComplete="off"
 
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-           
-                <Input id="password" type="password" required />
-              </Field>
-              <Field>
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              >
 
-                  <FieldLabel htmlFor="confrim-password">Confrim Password</FieldLabel>
-           
-                <Input id="confrim-password" type="password" required />
-              </Field>
+              </Controller>
+
+              <Controller
+                control={form.control}
+                name="lastName"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="lastName">Last name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="lastName"
+                      type="text"
+                      placeholder="Smith"
+                      aria-invalid={fieldState.invalid}
+
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              >
+
+              </Controller>
+
+              <Controller
+                control={form.control}
+                name="email"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      {...field}
+                      id="email"
+                      type="email"
+                      placeholder="m@example.com"
+                      aria-invalid={fieldState.invalid}
+                      autoComplete="off"
+
+
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              >
+
+
+
+              </Controller>
+
+
+              <Controller
+                control={form.control}
+                name="password"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+
+                    <FieldLabel htmlFor="password">Password</FieldLabel>
+
+                    <Input
+                      {...field}
+                      id="password"
+                      type="password"
+                      aria-invalid={fieldState.invalid}
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              >
+
+              </Controller>
+
+              <Controller
+
+                control={form.control}
+                name="confirmPassword"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+
+                    <FieldLabel htmlFor="confrim-password">Confrim Password</FieldLabel>
+
+                    <Input
+                      {...field}
+                      id="confrim-password"
+                      type="password"
+                      autoComplete="off"
+                      aria-invalid={fieldState.invalid}
+
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              >
+
+
+              </Controller>
+
+
+
+
+
               <Field>
                 <Button type="submit">Register</Button>
                 <FieldDescription className="text-center">
