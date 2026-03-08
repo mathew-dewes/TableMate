@@ -15,7 +15,7 @@ export default async function NavBar(){
                 {session && <Link href={'/dashboard'}>Dashboard</Link>}
         
                 <Link href={'/'}>Home</Link>
-                <Link href={'/hello'}>Slug</Link>
+                <Link href={'/mcdees'}>Slug</Link>
              
                 {session ? <LogoutButton/> : <Link href={'/login'}>Login</Link>}
       
