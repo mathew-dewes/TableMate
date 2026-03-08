@@ -53,12 +53,30 @@ export function RegisterForm({
 
     startTransition((async () => {
       const res = await registerWithEmailPassword(values);
+
+            if (res.error) {
+        form.setError("root", {
+          message: res.error
+        });
+        toast.error(res.error)
+      };
+
+            if (res.fieldErrors) {
+              Object.entries(res.fieldErrors).forEach(([field, message]) => {
+                form.setError(field as keyof z.infer<typeof registerFormSchema>,
+                  { message }
+                )
+              });
+              
+              toast.error(res.error)
       
-      if (res?.success){
+            }
+      
+       if (res?.success) {
         toast.success(res.message);
-      } else {
-        toast.error(res?.message)
-      }
+     
+
+      } 
     }))
 
 
@@ -237,6 +255,11 @@ export function RegisterForm({
                   Already have an account? <Link href="/login">Login</Link>
                 </FieldDescription>
               </Field>
+               {form.formState.errors.root && (
+                <p className="text-sm text-red-500 font-medium">
+                  {form.formState.errors.root.message}
+                </p>
+              )}
             </FieldGroup>
           </form>
         </CardContent>

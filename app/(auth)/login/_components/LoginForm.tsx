@@ -35,10 +35,10 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
 
-  
-    const [isPending, startTransition] = useTransition();
-  
-    const router = useRouter()
+
+  const [isPending, startTransition] = useTransition();
+
+  const router = useRouter()
 
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -46,7 +46,7 @@ export function LoginForm({
     defaultValues: {
       email: "",
       password: "",
-      
+
     }
   });
 
@@ -54,14 +54,30 @@ export function LoginForm({
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
     startTransition((async () => {
       const res = await loginUser(values);
-      
-      if (res?.success){
+
+      if (res.error) {
+        form.setError("root", {
+          message: res.error
+        });
+        toast.error(res.error)
+      };
+
+      if (res.fieldErrors) {
+        Object.entries(res.fieldErrors).forEach(([field, message]) => {
+          form.setError(field as keyof z.infer<typeof loginFormSchema>,
+            { message }
+          )
+        });
+        
+        toast.error(res.error)
+
+      }
+
+      if (res?.success) {
         toast.success(res.message);
         router.push('/dashboard')
 
-      } else {
-        toast.error(res?.message)
-      }
+      } 
     }))
 
   }
@@ -105,13 +121,13 @@ export function LoginForm({
                 control={form.control}
                 name="email"
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
+                  <Field data-invalid={fieldState.invalid || !!form.formState.errors.root}>
                     <FieldLabel htmlFor="email">Email</FieldLabel>
                     <Input
                       {...field}
                       id="email"
                       type="email"
-                      aria-invalid={fieldState.invalid}
+                      aria-invalid={fieldState.invalid || !!form.formState.errors.root}
                       placeholder="m@example.com"
                       autoComplete="off"
                     />
@@ -128,13 +144,13 @@ export function LoginForm({
                 control={form.control}
                 name="password"
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
+                  <Field data-invalid={fieldState.invalid || !!form.formState.errors.root}>
                     <div className="flex items-center">
                       <FieldLabel htmlFor="password">Password</FieldLabel>
                       <Link
                         href="/login/forgot-password"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
-                          tabIndex={-1}
+                        tabIndex={-1}
                       >
                         Forgot your password?
                       </Link>
@@ -142,7 +158,7 @@ export function LoginForm({
                     <Input
                       id="password"
                       type="password"
-                      aria-invalid={fieldState.invalid}
+                      aria-invalid={fieldState.invalid || !!form.formState.errors.root}
                       autoComplete="off"
                       {...field}
                     />
@@ -162,6 +178,11 @@ export function LoginForm({
                   Don&apos;t have an account? <Link href="/register">Register</Link>
                 </FieldDescription>
               </Field>
+              {form.formState.errors.root && (
+                <p className="text-sm text-red-500 font-medium">
+                  {form.formState.errors.root.message}
+                </p>
+              )}
             </FieldGroup>
           </form>
         </CardContent>

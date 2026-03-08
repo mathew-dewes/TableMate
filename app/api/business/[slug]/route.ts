@@ -10,7 +10,7 @@ export async function GET(
 
   const business = await getBusinessBySlug(slug)
 
-  if (!business.success) {
+  if (business.error) {
     return Response.json(business, { status: 404 })
   }
 

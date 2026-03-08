@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { notFound } from "next/navigation";
 
 export default async function page({
   params,
@@ -18,6 +19,9 @@ const res = await fetch(`${process.env.BASE_URL
 });
   const business = await res.json();
 
+  if (!business.success){
+return notFound()
+  }
 
     return (
         <div>

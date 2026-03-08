@@ -4,107 +4,130 @@ import z from "zod";
 import { loginFormSchema, registerFormSchema } from "../schema";
 import { createClientForServer } from "../supabase/server";
 
-export async function signOut(){
+export async function signOut() {
     try {
-    const supabase = await createClientForServer();
-    await supabase.auth.signOut();
+        const supabase = await createClientForServer();
+        await supabase.auth.signOut();
 
-    return {success: true, message: 'Signout successful'}
+        return { success: true, message: 'Signout successful' }
 
     } catch (error) {
         console.log(error);
-    return {success: false, message: 'Signout failed'}
-        
-        
+        return { success: false, message: 'Signout failed' }
+
+
     }
-  
+
 };
 
-export async function registerWithEmailPassword(values: z.infer<typeof registerFormSchema>){
+export async function registerWithEmailPassword(values: z.infer<typeof registerFormSchema>) {
 
     try {
         const parsed = registerFormSchema.safeParse(values);
 
-            if (!parsed.success) {
-            console.error('Validation errors:', parsed.error);
-            throw new Error('Validation failed');
-        } 
+           if (!parsed.success) {
+            const fieldErrors: Record<string, string> = {}
 
-         const supabase = await createClientForServer();
+            parsed.error.issues.forEach(issue => {
+                fieldErrors[issue.path[0] as string] = issue.message
+            })
 
-         const { error} = await  supabase.auth.signUp({
-            email:parsed.data.email,
-            password:parsed.data.password,
-            options:{
-                data:{
+            return {
+                success: false,
+                fieldErrors
+            }
+        }
+
+        const supabase = await createClientForServer();
+
+        const { error } = await supabase.auth.signUp({
+            email: parsed.data.email,
+            password: parsed.data.password,
+            options: {
+                data: {
                     username: values.firstName + " " + values.lastName
                 }
             }
-         });
+        });
 
-         if (error){
-            console.log('Error:', error);
-            return {
-                success:false, message: "There was an error", errorMessage: error.message
-            }
+  
+        if (error) {
+            console.log(error);
             
-         }
+            return {
+                success: false,
+                error: error.message
+            }
+        }
 
-         return {
+        return {
             success: true, message: "Please check your email"
-         }
-       
+        }
 
-   
-        
+
+
+
     } catch (error) {
+        console.error(error)
 
-        console.log(error);
-        
-        
+       return {
+            success: false,
+            error: "Something went wrong. Please try again."
+        }
+
+
     }
 
-    
+
 };
 
-export async function loginUser(values: z.infer<typeof loginFormSchema>){
-        try {
+export async function loginUser(values: z.infer<typeof loginFormSchema>) {
+    try {
         const parsed = loginFormSchema.safeParse(values);
 
-            if (!parsed.success) {
-            console.error('Validation errors:', parsed.error);
-            throw new Error('Validation failed');
-        } 
+        if (!parsed.success) {
+            const fieldErrors: Record<string, string> = {}
 
-         const supabase = await createClientForServer();
+            parsed.error.issues.forEach(issue => {
+                fieldErrors[issue.path[0] as string] = issue.message
+            })
 
-         const { data ,error} = await  supabase.auth.signInWithPassword({
-            email:parsed.data.email,
-            password:parsed.data.password
-         });
-
-         if (error){
-            console.log('Error:', error);
             return {
-                success:false, message: "There was an error", errorMessage: error.message
+                success: false,
+                fieldErrors
             }
+        }
+
+        const supabase = await createClientForServer();
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: parsed.data.email,
+            password: parsed.data.password
+        });
+
+        if (error) {
+            console.log(error);
             
-         }  
+            return {
+                success: false,
+                error: error.message
+            }
+        }
 
-         console.log(data);
-         
 
-         return {
-            success: true, message: `Welcome back ${data.user.user_metadata.username}`
-         }
-       
 
-   
-        
+        return {
+            success: true, message: `Welcome back ${data.user.user_metadata.username ?? "User"}`
+        }
+
     } catch (error) {
+        console.error(error);
+        
+        return {
+            success: false,
+            error: "Something went wrong. Please try again."
+        }
 
-        console.log(error);
-        
-        
+
     }
 }
