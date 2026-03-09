@@ -1,4 +1,5 @@
 import z from "zod";
+import { NZ_REGIONS } from "./contants";
 
 export const loginFormSchema = z.object({
     email: z.email('Please enter a valid email address'),
@@ -19,4 +20,13 @@ export const registerFormSchema = z.object({
 .refine((data)=> data.password === data.confirmPassword, {
     message: "Confirm password does not match",
     path: ["confirmPassword"]
+});
+
+
+export const businessDetailsForm = z.object({
+    name: z.string().min(5).max(20),
+    email: z.email('Please enter a valid email address'),
+    address: z.string().min(5).max(20),
+    phone: z.string().min(8).max(20),
+    region: z.enum(NZ_REGIONS, "Please select a region")
 })

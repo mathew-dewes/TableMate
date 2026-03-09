@@ -6,7 +6,7 @@ export default async function NavBar(){
     const session = await getSession();
     
     return (
-        <div className="flex justify-between items-center mt-10 w-full px-4 md:px-6 lg:px-8">
+        <div className="flex justify-between items-center mt-10 w-full px-4 md:px-6 lg:px-12">
   <h1 className="text-xl font-medium">Table<span className="text-primary font-bold">Mate</span></h1>
           
 
