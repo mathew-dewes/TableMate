@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono, Figtree } from "next/font/google";
+import { JetBrains_Mono, Figtree } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/web/Navbar";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "../components/theme-provider";
 import { Toaster } from "sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,16 +26,21 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en" className={cn(jetbrainsMono.variable, "font-sans", figtree.variable)}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`antialiased`}
       >
+        <TooltipProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-          <main className="mt-10 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8">
-            <NavBar />
-            {children}
+               <NavBar />
+
+          <main className="mt-5 w-full px-4 md:px-6 lg:px-8">
+         
+   
+            <TooltipProvider>{children}</TooltipProvider>
+
           </main>
           <Toaster
             duration={3000}
@@ -52,6 +50,8 @@ export default function RootLayout({
           />
 
         </ThemeProvider>
+        </TooltipProvider>
+
 
 
       </body>

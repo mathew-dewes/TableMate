@@ -29,7 +29,7 @@ export default function NavLinks({ activeSession }: { activeSession: boolean }) 
         return pathname.startsWith(path)
     }
 
-    return <ul className="flex gap-5 items-center font-medium">
+    return <ul className="flex justify-end gap-5 items-center font-medium">
 
         {navLinks.map((link, key) => {
             const show = !activeSession || link.href === '/restaurants'
