@@ -36,7 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange>
                <NavBar />
 
-          <main className="mt-5 w-full px-4 md:px-6 lg:px-8">
+          <main className="mt-5 w-full px-4 md:px-6 lg:px-12">
          
    
             <TooltipProvider>{children}</TooltipProvider>

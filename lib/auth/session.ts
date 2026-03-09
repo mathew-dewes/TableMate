@@ -20,4 +20,16 @@ export async function getSession(){
             console.log("Error:", error);
     }
 
+};
+
+
+export async function getUserId(){
+        const supabase = await createClientForServer();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+  throw new Error("User not authenticated")
+};
+
+return user.id
 }
