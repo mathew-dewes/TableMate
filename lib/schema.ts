@@ -29,4 +29,40 @@ export const businessDetailsForm = z.object({
     address: z.string().min(5).max(20),
     phone: z.string().min(8).max(20),
     region: z.enum(NZ_REGIONS, "Please select a region")
+});
+
+
+export const hoursSchema = z.object({
+  hours: z.array(
+    z.object({
+      day: z.string(),
+      isOpen: z.boolean(),
+      startTime: z.string().nullable(),
+      endTime: z.string().nullable(),
+    })
+  )
+})
+.superRefine((data, ctx) => {
+
+  data.hours.forEach((day, index) => {
+
+    if (!day.isOpen) return
+
+    if (!day.startTime || !day.endTime) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Opening and closing times required",
+        path: ["hours", index],
+      })
+    }
+
+    if (day.startTime && day.endTime && day.startTime >= day.endTime) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "End time must be after start time",
+        path: ["hours", index, "endTime"],
+      })
+    }
+  })
+
 })

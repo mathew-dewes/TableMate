@@ -15,14 +15,10 @@ export default  async function Page() {
     redirect("/onboarding?step=1")
   };
 
-    if (business.data.setup_step !== 1) {
+    if (business.data.setup_step !== 1 && !business.data.is_public) {
     redirect(`/onboarding?step=${business.data.setup_step}`)
   }
 
-    if (!business.data.is_public) {
-    redirect("/onboarding?step=4")
-  }
-  
 
 
   return (

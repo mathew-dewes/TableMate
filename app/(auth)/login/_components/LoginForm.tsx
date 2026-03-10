@@ -27,6 +27,7 @@ import { useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { loginUser } from "@/lib/auth/actions"
 import { toast } from "sonner"
+import { isUserBusinessPublished } from "@/lib/db/queries/business"
 
 
 
@@ -74,8 +75,18 @@ export function LoginForm({
       }
 
       if (res?.success) {
+
+        const isPublic = await isUserBusinessPublished();
+
+        if (isPublic.data?.is_public){
+          router.push('/dashboard')
+        } else {
+          router.push('/onboarding')
+        }
+    
+        
         toast.success(res.message);
-        router.push('/dashboard')
+
 
       } 
     }))

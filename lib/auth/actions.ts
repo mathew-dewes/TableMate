@@ -3,6 +3,7 @@
 import z from "zod";
 import { loginFormSchema, registerFormSchema } from "../schema";
 import { createClientForServer } from "../supabase/server";
+import { redirect } from "next/navigation";
 
 export async function signOut() {
     try {
@@ -114,6 +115,7 @@ export async function loginUser(values: z.infer<typeof loginFormSchema>) {
             }
         }
 
+  
 
 
         return {
