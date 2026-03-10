@@ -15,7 +15,17 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-export default function BusinessDetailsForm() {
+type BusinessDetails = {
+    name: string,
+    email: string,
+    address: string,
+    region: string,
+    phone: string,
+    setup_step: number
+
+}
+
+export default function BusinessDetailsForm({ name, email, address, phone, region, setup_step }: BusinessDetails) {
 
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
@@ -24,11 +34,11 @@ export default function BusinessDetailsForm() {
     const form = useForm<z.infer<typeof businessDetailsForm>>({
         resolver: zodResolver(businessDetailsForm),
         defaultValues: {
-            name: "",
-            email: "",
-            address: "",
-            phone: "",
-            region: ""
+            name: name,
+            email: email,
+            address: address,
+            phone: phone,
+            region: region
         }
     });
 
@@ -36,31 +46,36 @@ export default function BusinessDetailsForm() {
     function onSubmit(values: z.infer<typeof businessDetailsForm>) {
         startTransition((async () => {
 
-           const res = await createBusiness(values);
 
-                 if (res.error) {
-        form.setError("root", {
-          message: res.error
-        });
-        toast.error(res.error)
-      };
+
+            const res = await createBusiness(values);
+
+            if (res.error) {
+                form.setError("root", {
+                    message: res.error
+                });
+                toast.error(res.error)
+            };
 
             if (res.fieldErrors) {
-              Object.entries(res.fieldErrors).forEach(([field, message]) => {
-                form.setError(field as keyof z.infer<typeof businessDetailsForm>,
-                  { message }
-                )
-              });
-              
-              toast.error(res.error)
-      
+                Object.entries(res.fieldErrors).forEach(([field, message]) => {
+                    form.setError(field as keyof z.infer<typeof businessDetailsForm>,
+                        { message }
+                    )
+                });
+
+                toast.error(res.error)
+
             }
 
-                  if (res?.success) {
-        toast.success(res.message);
-        router.push('/dashboard')
+            if (res?.success) {
+                toast.success(res.message);
 
-      } 
+                if (res.nextStep) {
+                    router.push('/onboarding?step=' + (Number(setup_step) + 1))
+                }
+
+            }
 
 
         }))
@@ -198,23 +213,23 @@ export default function BusinessDetailsForm() {
                                 )}
 
                             />
-                                    {form.formState.errors.root && (
-                <p className="text-sm text-red-500 font-medium">
-                  {form.formState.errors.root.message}
-                </p>
-              )}
+                            {form.formState.errors.root && (
+                                <p className="text-sm text-red-500 font-medium">
+                                    {form.formState.errors.root.message}
+                                </p>
+                            )}
 
 
                         </FieldGroup>
                     </form>
                 </CardContent>
 
-                              <CardFooter className="flex-col gap-4">
+                <CardFooter className="flex-col gap-4">
 
 
-                                   <Button disabled={isPending} form="businessDetailsForm" className="w-full">Submit</Button>
-                                   <Button disabled={isPending} onClick={()=>form.reset()} variant={"outline"} className="w-full">Clear form</Button>
-                                </CardFooter>
+                    <Button disabled={isPending} form="businessDetailsForm" className="w-full">Submit</Button>
+                    <Button disabled={isPending} onClick={() => form.reset()} variant={"outline"} className="w-full">Clear form</Button>
+                </CardFooter>
 
             </Card>
         </div>
