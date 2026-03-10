@@ -15,7 +15,7 @@ return     <Card className="w-full max-w-3xl">
       <CardDescription>Lorem ipsum dolor sit amet.</CardDescription>
     </CardHeader>
        <CardFooter>
-        <Link className={buttonVariants()} href={'/dashboard/setup'}>Create Business</Link>
+        <Link className={buttonVariants()} href={'/onboarding'}>Create Business</Link>
    
 
 

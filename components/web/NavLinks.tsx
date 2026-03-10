@@ -10,7 +10,9 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
     { name: 'Dashboard', href: '/dashboard' },
-    { name: 'Restaurants', href: '/restaurants' },
+      {name: 'Onboarding', href: '/onboarding'},
+    { name: 'Restaurants', href: '/restaurants' }
+  
 
 ]
 

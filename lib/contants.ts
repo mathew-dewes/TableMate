@@ -15,4 +15,5 @@ export const NZ_REGIONS = [
   "Canterbury",
   "Otago",
   "Southland"
-]
+];
+

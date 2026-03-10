@@ -36,10 +36,12 @@ export default function RootLayout({
           disableTransitionOnChange>
                <NavBar />
 
-          <main className="mt-5 w-full px-4 md:px-6 lg:px-12">
-         
-   
+          <main className="mt-5 mb-30 w-full px-4 md:px-6 lg:px-12">
+
+       
+  
             <TooltipProvider>{children}</TooltipProvider>
+            {/* Footer to add later */}
 
           </main>
           <Toaster
