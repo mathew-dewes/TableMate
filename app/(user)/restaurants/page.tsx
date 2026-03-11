@@ -17,12 +17,8 @@ export default async function page(){
 
   const businesses = getBusinesses.data as  BusinessType
 
-  console.log(businesses);
-  
 
 
-
-  
 
     return(
         <div className="flex gap-10">
