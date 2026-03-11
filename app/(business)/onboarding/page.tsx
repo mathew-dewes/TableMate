@@ -1,10 +1,10 @@
 
 import { getUserBusiness } from "@/lib/db/queries/business";
 import BusinessStep from "./_components/BusinessStep";
-import SetUpComplete from "./_components/Complete";
 import HoursStep from "./_components/HoursStep";
 import TableStep from "./_components/TablesStep";
 import { redirect } from "next/navigation";
+import FinalReview from "./_components/FinalReview";
 
 
 export default async function page({
@@ -29,7 +29,7 @@ export default async function page({
     case 3:
       return <TableStep />
     case 4:
-      return <SetUpComplete />
+      return <FinalReview />
 
   }
 

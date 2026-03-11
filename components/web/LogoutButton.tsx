@@ -17,7 +17,7 @@ export default function LogoutButton(){
 
             if (res.success){
                 toast.success(res.message);
-                router.push('/')
+                router.push('/login')
             } else {
                 toast.error(res.message)
             }

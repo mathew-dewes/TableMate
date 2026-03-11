@@ -4,6 +4,7 @@ import { getUserId } from "@/lib/auth/session";
 import { businessDetailsForm } from "@/lib/schema";
 import { createClientForServer } from "@/lib/supabase/server";
 import { createSlug } from "@/lib/utils";
+import { updateTag } from "next/cache";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 
@@ -94,4 +95,28 @@ export async function createBusiness(values: z.infer<typeof businessDetailsForm>
     }
 
 };
+
+
+export async function publishBusiness(businessId: string){
+        const supabase = await createClientForServer();
+
+    const {error} = await supabase.from("Business").update({
+        is_public: true
+    }).eq("id", businessId)
+     
+
+
+        if (error) {
+            console.log(error);
+  
+            return {
+                success: false,
+                error: error.message
+            }
+        };
+
+        updateTag('business');
+
+        return {success: true, message: "Your business has been published!"}
+}
 

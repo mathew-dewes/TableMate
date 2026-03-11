@@ -36,6 +36,7 @@ export default function NavLinks({ activeSession, isBusinessPublic }: { activeSe
         {navLinks.map((link, key) => {
             const show = !activeSession || link.href === '/restaurants';
             if (link.href == "/dashboard" && !isBusinessPublic) return
+            if (link.href == "/onboarding" && isBusinessPublic) return
             return (
                 <li
                     key={key}
@@ -47,7 +48,7 @@ export default function NavLinks({ activeSession, isBusinessPublic }: { activeSe
                     )}>
                     <Link
                         className={cn(
-                            buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`, size: "lg" }))}
+                            buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`}))}
                         href={link.href}>{link.name}</Link>
                 </li>
             )
