@@ -48,7 +48,7 @@ export default function NavLinks({ activeSession, isBusinessPublic }: { activeSe
                     )}>
                     <Link
                         className={cn(
-                            buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`, size: "lg" }))}
+                            buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`}))}
                         href={link.href}>{link.name}</Link>
                 </li>
             )

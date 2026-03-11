@@ -4,6 +4,7 @@ import { getUserId } from "@/lib/auth/session";
 import { businessDetailsForm } from "@/lib/schema";
 import { createClientForServer } from "@/lib/supabase/server";
 import { createSlug } from "@/lib/utils";
+import { updateTag } from "next/cache";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 
@@ -114,7 +115,7 @@ export async function publishBusiness(businessId: string){
             }
         };
 
-        revalidatePath('/onboarding');
+        updateTag('business');
 
         return {success: true, message: "Your business has been published!"}
 }

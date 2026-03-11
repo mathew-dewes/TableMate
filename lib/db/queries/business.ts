@@ -25,6 +25,25 @@ export async function getBusinessBySlug(slug: string){
 };
 
 
+export async function getAllBusinesses(){
+        const supabase = await createClientForServer();
+
+    const {data, error} = await supabase.from("Business")
+  .select("id, name, address, region, email, phone, description, slug")
+
+
+    if (error){
+        console.log("Error:", error);
+        
+        return {success: false, error: error};
+       
+        
+    }
+
+    return {success: true, data}
+}
+
+
 export async function getUserBusiness(){
     const userId = await getUserId();
 
