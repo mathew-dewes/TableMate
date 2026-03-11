@@ -31,18 +31,6 @@ export default async function page({
     case 4:
       return <SetUpComplete />
 
-
   }
-  return (
-    <div>
-      <p>Business set up page {step}</p>
-      {/* Restaurant details form to go here */}
-      {/* Restaurant Name
-            Phone Number
-            Address
-            City
-            Country
-            Website (optional) */}
-    </div>
-  )
+
 }

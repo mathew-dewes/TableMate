@@ -4,18 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { setAvailability } from "@/lib/db/mutations/availability";
 import { hoursSchema } from "@/lib/schema";
 import { days, generateTimeSlots } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 
 
 
 export default function HoursForm() {
-
+  const [isPending, startTransition] = useTransition();
 const timeSlots = generateTimeSlots(120);
+const router = useRouter()
 
     const form = useForm<z.infer<typeof hoursSchema>>({
         resolver: zodResolver(hoursSchema),
@@ -37,7 +42,21 @@ const timeSlots = generateTimeSlots(120);
 
 
 function onSubmit(values: z.infer<typeof hoursSchema>){
-console.log(values);
+  startTransition((async()=>{
+   const res = await setAvailability(values);
+
+   if (res.success){
+    toast.success(res.message);
+    router.push('/onboarding?step=3')
+
+   } else {
+    toast.error(res.message)
+   }
+
+
+  }))
+
+
 
 }
 
@@ -129,7 +148,7 @@ console.log(values);
 
             </CardContent>
             <CardFooter>
-                <Button form="hoursForm">Confirm</Button>
+                <Button disabled={isPending} form="hoursForm">Confirm</Button>
             </CardFooter>
 
 
