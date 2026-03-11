@@ -41,7 +41,7 @@ export type Database = {
     Tables: {
       Availability: {
         Row: {
-          business_id: string | null
+          business_id: string
           closing_time: string
           created_at: string
           day_of_week: number
@@ -49,7 +49,7 @@ export type Database = {
           opening_time: string
         }
         Insert: {
-          business_id?: string | null
+          business_id?: string
           closing_time: string
           created_at?: string
           day_of_week: number
@@ -57,7 +57,7 @@ export type Database = {
           opening_time: string
         }
         Update: {
-          business_id?: string | null
+          business_id?: string
           closing_time?: string
           created_at?: string
           day_of_week?: number

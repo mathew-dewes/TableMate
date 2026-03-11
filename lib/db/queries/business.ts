@@ -28,18 +28,29 @@ export async function getBusinessBySlug(slug: string){
 export async function getUserBusiness(){
     const userId = await getUserId();
 
-      if (!userId) {
-    return {
-      success: false,
-      error: "User not authenticated",
-    };
-  }
-
       const supabase = await createClientForServer();
 
       const {data, error} = await supabase.from('Business').select().eq("user_id", userId).maybeSingle();
 
        if (error) {
+            console.log(error);
+            
+            return {
+                success: false,
+                error: error.message
+            }
+        };
+
+        return {success: true, data}
+};
+
+
+export async function isUserBusinessPublished(){
+        const userId = await getUserId();
+        const supabase = await createClientForServer();
+  const {data, error} = await supabase.from("Business").select('is_public').eq("user_id", userId).maybeSingle();
+
+      if (error) {
             console.log(error);
             
             return {

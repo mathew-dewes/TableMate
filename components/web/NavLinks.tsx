@@ -16,7 +16,7 @@ const navLinks = [
 
 ]
 
-export default function NavLinks({ activeSession }: { activeSession: boolean }) {
+export default function NavLinks({ activeSession, isBusinessPublic }: { activeSession: boolean, isBusinessPublic: boolean }) {
 
 
     const pathname = usePathname();
@@ -34,7 +34,8 @@ export default function NavLinks({ activeSession }: { activeSession: boolean }) 
     return <ul className="flex justify-end gap-5 items-center font-medium">
 
         {navLinks.map((link, key) => {
-            const show = !activeSession || link.href === '/restaurants'
+            const show = !activeSession || link.href === '/restaurants';
+            if (link.href == "/dashboard" && !isBusinessPublic) return
             return (
                 <li
                     key={key}

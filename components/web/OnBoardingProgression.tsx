@@ -2,8 +2,8 @@ import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
 import { buttonVariants } from "../ui/button"
 import Link from "next/link"
-import { Card, CardHeader, CardTitle } from "../ui/card"
-import { CircleCheckBig, CircleX, SquarePen } from "lucide-react"
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card"
+import { CircleCheckBig, CircleX } from "lucide-react"
 
 
 const steps = [
@@ -43,57 +43,38 @@ export default function OnBoardingProgression({ currentStep }: { currentStep: nu
                                         isComplete ?
                                         <CircleCheckBig className="text-primary" /> : 
                                         isCurrent ?
-                                        <SquarePen className="text-yellow-300" />:
-                                        <CircleX className="text-red-400" />}{step.title} {isCurrent && '- Editing'}
+                                        <CircleX className="text-yellow-300" />:
+                                        <CircleX className="text-red-400" />}{step.title} 
                                         
                                         </CardTitle>
                                 </CardHeader>
+                                <CardFooter>
+                                    <Link 
+                                    className={buttonVariants({variant:!isComplete && !isCurrent ? "outline" : "default", 
+                                        className: `${!isComplete && !isCurrent ? "pointer-events-none opacity-60" : ""}`})} 
+                                    href={'/onboarding?step=' + step.id}>
+                                        Update
+                                        </Link>
+                         
+                           
+                             
+                                </CardFooter>
                             </Card>
                      
-
-                        //         <div
-                        //             key={step.id}
-                        //             className="flex items-center justify-between border rounded-md p-3"
-                        //         >
-                        //             <div className="flex items-center gap-3">
-                        //                 <div   className={`h-6 w-6 flex items-center justify-center rounded-full text-xs
-                        //         ${isComplete ? "bg-green-500 text-white" :
-                        //           isCurrent ? "bg-primary text-white" :
-                        //           "bg-muted"}
-                        //       `}>{isComplete ? "✓" : step.id}
-
-                        //                 </div>
-
-                        //                    <span className="text-sm font-medium">
-                        //       {step.title}
-                        //     </span>
-
-                        //             </div>
-
-
-                        //   {isCurrent && (
-                        //     <span className="text-xs text-muted-foreground">
-                        //       Current
-                        //     </span>
-                        //   )}
-
-                        //   {isComplete && (
-                        //     <span className="text-xs text-green-600">
-                        //       Completed
-                        //     </span>
-                        //   )}
-                        //         </div>
                     )
                 })}
             </div>
 
 
 
+                {/* <div className="flex mt-5 gap-2">
+                    <Link className={buttonVariants()} href={'/onboarding?step=' + (currentStep - 1)}>Go Back</Link>
+                    <Link className={buttonVariants()} href={'/onboarding?step=' + (currentStep)}>Next</Link>
+         
+                </div> */}
 
 
 
-
-            <Link href={'/onboarding'} className={buttonVariants({ className: "mt-5" })}>Continue</Link>
 
         </div>
 
