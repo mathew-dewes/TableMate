@@ -36,6 +36,7 @@ export default function NavLinks({ activeSession, isBusinessPublic }: { activeSe
         {navLinks.map((link, key) => {
             const show = !activeSession || link.href === '/restaurants';
             if (link.href == "/dashboard" && !isBusinessPublic) return
+            if (link.href == "/onboarding" && isBusinessPublic) return
             return (
                 <li
                     key={key}
