@@ -2,6 +2,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserBusiness } from "@/lib/db/queries/business";
 import Link from "next/link";
+import DeleteBusinessButton from "./DeleteBusinessButton";
 
 export default async function BusinessCard(){
 
@@ -42,6 +43,7 @@ return     <Card className="w-full max-w-3xl">
       <Button>View bookings</Button>
       <Button>View tables</Button>
       <Button>View bookings</Button>
+      <DeleteBusinessButton businessId={business.data.id}/>
   
         </CardFooter>
       

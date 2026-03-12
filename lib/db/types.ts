@@ -13,3 +13,12 @@ export type BusinessType = {
             closing_time: string
         }[]
     };
+
+
+export type AvailabilityType = {
+    day_of_week: number,
+    opening_time: string,
+    closing_time: string
+};
+
+

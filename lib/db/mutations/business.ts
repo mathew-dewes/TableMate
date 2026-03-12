@@ -1,7 +1,7 @@
 "use server";
 
 import { getUserId } from "@/lib/auth/session";
-import { businessDetailsForm } from "@/lib/schema";
+import { businessDetailsFormSchema } from "@/lib/schema";
 import { createClientForServer } from "@/lib/supabase/server";
 import { createSlug } from "@/lib/utils";
 import { updateTag } from "next/cache";
@@ -9,13 +9,13 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 
 
-export async function createBusiness(values: z.infer<typeof businessDetailsForm>) {
+export async function createBusiness(values: z.infer<typeof businessDetailsFormSchema>) {
 
     const userId = await getUserId()
 
     try {
 
-        const parsed = businessDetailsForm.safeParse(values);
+        const parsed = businessDetailsFormSchema.safeParse(values);
 
         if (!parsed.success) {
             const fieldErrors: Record<string, string> = {}
@@ -118,5 +118,29 @@ export async function publishBusiness(businessId: string){
         updateTag('business');
 
         return {success: true, message: "Your business has been published!"}
+};
+
+
+export async function deleteBusiness(businessId: string){
+           const supabase = await createClientForServer();
+           const user_id = await getUserId()
+
+              const {error} = await supabase.from("Business").delete({}).eq("id", businessId).eq("user_id", user_id)
+     
+
+
+        if (error) {
+            console.log(error);
+  
+            return {
+                success: false,
+                error: error.message
+            }
+        };
+
+        updateTag('business');
+        revalidatePath('/dashboard')
+
+        return {success: true, message: "Business was deleted successfully."}
 }
 
