@@ -59,7 +59,7 @@ export default async function BookingResults({ slug, booking_date, partySize }: 
                         </CardHeader>
             
                         <CardFooter>
-                            <Link className={buttonVariants({className: "w-full"})} href={`/restaurants/${slug}/confirm?date=${slot.toISOString()}`}>Select time</Link>
+                            <Link className={buttonVariants({className: "w-full"})} href={`/restaurants/${slug}/confirm?date=${encodeURIComponent(slot.toISOString())}`}>Select time</Link>
                          
                         </CardFooter>
                     </Card>

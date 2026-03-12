@@ -67,7 +67,6 @@ export default function TableBookingForm({ slug, workHours }: Props) {
 
     function onSubmit(values: z.infer<typeof tableBookingFormSchema>) {
         startTransition((async () => {
-            console.log(values, slug);
             router.push(`/restaurants/${slug}/availability?date=${values.date.toDateString()}&party=${values.partySize}`)
             toast.info('Searching results')
 
