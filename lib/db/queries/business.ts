@@ -9,7 +9,7 @@ export async function getBusinessBySlug(slug: string){
     const supabase = await createClientForServer();
 
     const {data, error} = await supabase.from("Business")
-  .select()
+  .select(`id, name, address, region, email, phone, description, slug, Availability(day_of_week, opening_time, closing_time)`)
   .eq("slug", slug).single()
  
 
@@ -29,7 +29,7 @@ export async function getAllBusinesses(){
         const supabase = await createClientForServer();
 
     const {data, error} = await supabase.from("Business")
-  .select("id, name, address, region, email, phone, description, slug")
+  .select(`id, name, address, region, email, phone, description, slug, Availability(day_of_week, opening_time, closing_time)`)
 
 
     if (error){

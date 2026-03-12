@@ -7,4 +7,9 @@ export type BusinessType = {
         slug: string;
         phone: string | null;
         description: string | null;
-    }[];
+        Availability:{
+            day_of_week: string,
+            opening_time: string,
+            closing_time: string
+        }[]
+    };

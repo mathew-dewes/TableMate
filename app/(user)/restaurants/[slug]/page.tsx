@@ -1,5 +1,8 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { BusinessType } from "@/lib/db/types";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
+import TodaysWorkingHours from "../_components/TodaysWorkingHours";
 
 export default async function page({
   params,
@@ -17,19 +20,55 @@ const res = await fetch(`${process.env.BASE_URL
     tags: ["business"]
   }
 });
-  const business = await res.json();
+  const getBusiness = await res.json();
 
-  if (!business.success){
+    const business = getBusiness.data as  BusinessType;
+
+  
+
+  if (!getBusiness.success){
 return notFound()
   }
 
     return (
         <div>
-            <Card className="w-full max-w-xl">
+            <Card className="w-full max-w-3xl">
                 <CardHeader>
-                    <CardTitle>{business.data.name}</CardTitle>
-                    <CardDescription>{business.data.address}</CardDescription>
+                    <CardTitle>{business.name}</CardTitle>
+                    <CardDescription>
+                      <div className="flex items-center gap-0.5">
+                           <MapPin className="text-primary" />
+                           <p>{business.address}, {business.region}</p>
+                      </div>
+              </CardDescription>
                 </CardHeader>
+
+                <CardContent>
+                  
+                  {business.description && <p className="mb-2">{business.description}</p>}
+                  
+                  <div>
+                    <h2 className="font-semibold">Contact:</h2>
+
+                    <div className="mt-2 ml-3 space-y-1">
+             <div className="flex items-center gap-1">
+                       <Mail size={15}/>
+            <p>{business.email}</p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                       <Phone size={15}/>
+            <p>{business.phone}</p>
+                    </div>
+                    </div>
+
+                    <div className="w-lg">
+                      <TodaysWorkingHours businessHours={business.Availability}/>
+                    </div>
+       
+        
+                  </div>
+
+                </CardContent>
                 
             </Card>
         </div>

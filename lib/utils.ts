@@ -42,7 +42,19 @@ export const days = [
   { label: "Friday", value: "friday" },
   { label: "Saturday", value: "saturday" },
   { label: "Sunday", value: "sunday" },
-]
+];
+
+
+export function getNZTime() {
+  return new Intl.DateTimeFormat('en-NZ', {
+    hour: '2-digit',
+    minute: '2-digit',
+    day:"2-digit",
+    weekday: "long",
+    hour12: false,
+    timeZone: 'Pacific/Auckland'
+  }).format(new Date());
+};
 
 
 
