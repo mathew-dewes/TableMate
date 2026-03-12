@@ -79,7 +79,11 @@ export type Database = {
           business_id: string
           created_at: string
           end_time: string
+          guest_email: string
+          guest_name: string
+          guest_phone: string | null
           id: string
+          notes: string | null
           party_size: number
           source: string
           start_time: string
@@ -90,7 +94,11 @@ export type Database = {
           business_id?: string
           created_at?: string
           end_time: string
+          guest_email: string
+          guest_name: string
+          guest_phone?: string | null
           id?: string
+          notes?: string | null
           party_size: number
           source?: string
           start_time: string
@@ -101,7 +109,11 @@ export type Database = {
           business_id?: string
           created_at?: string
           end_time?: string
+          guest_email?: string
+          guest_name?: string
+          guest_phone?: string | null
           id?: string
+          notes?: string | null
           party_size?: number
           source?: string
           start_time?: string
@@ -202,7 +214,7 @@ export type Database = {
       Table: {
         Row: {
           active: boolean
-          business_id: string | null
+          business_id: string
           capacity: number
           created_at: string
           id: string
@@ -210,7 +222,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
-          business_id?: string | null
+          business_id?: string
           capacity: number
           created_at?: string
           id?: string
@@ -218,7 +230,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
-          business_id?: string | null
+          business_id?: string
           capacity?: number
           created_at?: string
           id?: string

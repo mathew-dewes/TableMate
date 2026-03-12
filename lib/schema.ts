@@ -84,4 +84,13 @@ export const tablesSchema = z.object({
 export const tableBookingFormSchema = z.object({
   date:z.date('Please select a date'),
   partySize: z.string().min(1)
+});
+
+
+export const bookingFormSchema = z.object({
+  name: z.string().min(3, "Name must be 3 or more characters.").max(20, "Name must be 20 or less characters."),
+  email:z.email('Please enter a valid email address.'),
+  phone: z.string().min(8).max(20),
+  notes: z.string().min(1).max(200)
+
 })
