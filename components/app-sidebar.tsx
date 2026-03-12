@@ -14,9 +14,9 @@ import {
 
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, BookOpenCheck, Utensils, ClipboardClock } from "lucide-react"
+import { Settings2Icon, FrameIcon, PieChartIcon, MapIcon, BookOpenCheck, Utensils, ClipboardClock } from "lucide-react"
 
-// This is sample data.
+
 const data = {
   user: {
     name: "shadcn",

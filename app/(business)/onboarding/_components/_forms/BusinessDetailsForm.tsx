@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NZ_REGIONS } from "@/lib/contants";
 import { createBusiness } from "@/lib/db/mutations/business";
-import { businessDetailsForm } from "@/lib/schema";
+import { businessDetailsFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -31,8 +31,8 @@ export default function BusinessDetailsForm({ name, email, address, phone, regio
     const router = useRouter();
 
 
-    const form = useForm<z.infer<typeof businessDetailsForm>>({
-        resolver: zodResolver(businessDetailsForm),
+    const form = useForm<z.infer<typeof businessDetailsFormSchema>>({
+        resolver: zodResolver(businessDetailsFormSchema),
         defaultValues: {
             name: name,
             email: email,
@@ -43,7 +43,7 @@ export default function BusinessDetailsForm({ name, email, address, phone, regio
     });
 
 
-    function onSubmit(values: z.infer<typeof businessDetailsForm>) {
+    function onSubmit(values: z.infer<typeof businessDetailsFormSchema>) {
         startTransition((async () => {
 
 
@@ -59,7 +59,7 @@ export default function BusinessDetailsForm({ name, email, address, phone, regio
 
             if (res.fieldErrors) {
                 Object.entries(res.fieldErrors).forEach(([field, message]) => {
-                    form.setError(field as keyof z.infer<typeof businessDetailsForm>,
+                    form.setError(field as keyof z.infer<typeof businessDetailsFormSchema>,
                         { message }
                     )
                 });
@@ -92,7 +92,7 @@ export default function BusinessDetailsForm({ name, email, address, phone, regio
                 </CardHeader>
 
                 <CardContent>
-                    <form id="businessDetailsForm" onSubmit={form.handleSubmit(onSubmit)} action="">
+                    <form id="businessDetailsForm" onSubmit={form.handleSubmit(onSubmit)}>
                         <FieldGroup>
                             <Controller
                                 control={form.control}

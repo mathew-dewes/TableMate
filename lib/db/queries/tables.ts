@@ -19,4 +19,24 @@ export async function getBusinessTables(business_id: string){
     }
 
         return {success: true, data}
+};
+
+
+export async function getEligibleTables(partySize: number){
+
+           const supabase = await createClientForServer();
+     const { error: tableCheckError, data: tables } = await supabase.from("Table")
+        .select("id, table_number, capacity").eq("active", false).gte("capacity", partySize);
+
+
+    if (tableCheckError) {
+        console.log("Error:", tableCheckError);
+
+        return { success: false, error: tableCheckError };
+
+    };
+
+    return tables
 }
+
+

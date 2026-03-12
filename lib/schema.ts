@@ -23,7 +23,7 @@ export const registerFormSchema = z.object({
   });
 
 
-export const businessDetailsForm = z.object({
+export const businessDetailsFormSchema = z.object({
   name: z.string().min(5).max(20),
   email: z.email('Please enter a valid email address'),
   address: z.string().min(5).max(20),
@@ -80,3 +80,8 @@ export const tablesSchema = z.object({
     )
     .optional(),
 });
+
+export const tableBookingFormSchema = z.object({
+  date:z.date('Please select a date'),
+  partySize: z.string().min(1)
+})
