@@ -19,6 +19,14 @@ export async function makeBooking(
     try {
         const parsed = bookingFormSchema.safeParse(values);
 
+
+
+        
+        console.log(slug, start_time, table_id);
+        
+        
+        
+
            
         
 
