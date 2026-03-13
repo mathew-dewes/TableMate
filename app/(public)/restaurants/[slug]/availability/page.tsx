@@ -9,10 +9,13 @@ export default async function page({
 
     const { slug } = await params;
 
-     const bookingDate = (await searchParams).date;
+     const selectedDay = (await searchParams).date;
      const partySize = (await searchParams).party;
+
+
      
-     
+
+    
     return (
         <div>
             <div className="mt-5">
@@ -24,7 +27,7 @@ export default async function page({
                         </CardHeader>
                     </Card>
                 </div>
-                <BookingResults slug={slug} booking_date={new Date(bookingDate)} partySize={Number(partySize)}/>
+                <BookingResults selectedDay={selectedDay} partySize={partySize} slug={slug}/>
             </div>
 
         </div>

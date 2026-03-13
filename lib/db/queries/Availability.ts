@@ -24,9 +24,9 @@ export async function getBusinessWorkHours(business_id: string){
     };
 
 
-export async function getBusinessAvailablity(slug: string, booking_date: Date) {
+export async function getBusinessAvailablity(slug: string, dayNumber: number) {
     const supabase = await createClientForServer();
-    const date = new Date(booking_date).getDay();
+
 
         const { error: businessError, data: business } = await supabase.from("Business").select("id, booking_duration").eq("slug", slug).single();
 
@@ -38,7 +38,7 @@ export async function getBusinessAvailablity(slug: string, booking_date: Date) {
     }
 
     const { data, error } = await supabase.from("Availability")
-        .select(`day_of_week, opening_time, closing_time`).eq("business_id", business.id).eq("day_of_week", date).maybeSingle()
+        .select(`day_of_week, opening_time, closing_time`).eq("business_id", business.id).eq("day_of_week", dayNumber).maybeSingle()
 
 
     if (error) {
