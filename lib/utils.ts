@@ -91,27 +91,4 @@ export function generateSlots(
 };
 
 
-export function filterBookedSlots(
-  slots: Date[],
-  tables: { id: string; table_number: number }[],
-  bookings: { id:string, table_id: string; start_time: Date; end_time: Date }[],
-  bookingDuration: number
-) {
-  const availableSlots = slots.filter((slotStart) => {
-    const slotEnd = new Date(slotStart)
-    slotEnd.setMinutes(slotEnd.getMinutes() + bookingDuration)
-
-    // count how many tables are booked in this slot
-    const bookedTables = bookings.filter(
-      (b) =>
-        new Date(b.start_time) < slotEnd &&
-        new Date(b.end_time) > slotStart
-    ).map((b) => b.table_id)
-
-    // slot is available if at least 1 table is free
-    return tables.some((t) => !bookedTables.includes(t.id))
-  })
-
-  return availableSlots
-};
 
