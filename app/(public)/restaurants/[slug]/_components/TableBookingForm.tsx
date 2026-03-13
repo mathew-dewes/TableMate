@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+
 type Props = {
     slug: string,
     workHours:{
@@ -35,7 +36,9 @@ type Props = {
         opening_time: string,
         closing_time: string
     }[]
-}
+};
+
+
 
 const today = new Date()
 today.setHours(0, 0, 0, 0)
@@ -67,7 +70,9 @@ export default function TableBookingForm({ slug, workHours }: Props) {
 
     function onSubmit(values: z.infer<typeof tableBookingFormSchema>) {
         startTransition((async () => {
-            router.push(`/restaurants/${slug}/availability?date=${values.date.toDateString()}&party=${values.partySize}`)
+router.push(
+  `/restaurants/${slug}/availability?date=${format(values.date, "yyyy-MM-dd")}&party=${values.partySize}`
+)
             toast.info('Searching results')
 
         }))
