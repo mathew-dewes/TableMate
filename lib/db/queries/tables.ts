@@ -22,7 +22,7 @@ export async function getBusinessTables(business_id: string){
 };
 
 
-export async function getEligibleTables(partySize: number){
+export async function getEligibleTables(partySize: string){
 
            const supabase = await createClientForServer();
      const { error: tableCheckError, data: tables } = await supabase.from("Table")
@@ -32,7 +32,7 @@ export async function getEligibleTables(partySize: number){
     if (tableCheckError) {
         console.log("Error:", tableCheckError);
 
-        return { success: false, error: tableCheckError };
+
 
     };
 

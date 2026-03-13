@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
+import { set } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -50,7 +51,7 @@ export function getNZTime() {
   return new Intl.DateTimeFormat('en-NZ', {
     hour: '2-digit',
     minute: '2-digit',
-    day:"2-digit",
+    day: "2-digit",
     weekday: "long",
     hour12: false,
     timeZone: 'Pacific/Auckland'
@@ -59,13 +60,14 @@ export function getNZTime() {
 
 
 export function combineDateAndTime(date: Date, time: string) {
-  const [hours, minutes] = time.split(":").map(Number)
-
-  const result = new Date(date)
-  result.setHours(hours, minutes, 0, 0)
-
-  return result
-};
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+  return set(date, {
+    hours,
+    minutes,
+    seconds,
+    milliseconds: 0
+  })
+}
 
 export function generateSlots(
   bookingDate: Date,
@@ -90,5 +92,37 @@ export function generateSlots(
   return slots
 };
 
+
+
+
+export function getAvailableTables(
+  tables: { id: string; table_number: number; capacity: number }[] | null,
+  bookings: { table_id: string; start_time: string; end_time: string }[],
+  slotStart: Date,
+  slotEnd: Date
+) {
+  
+  if (!tables) return [];
+
+  
+  
+
+  return tables.filter((table) => {
+
+    const tableBookings = bookings.filter(
+      (b) => b.table_id === table.id
+    )
+
+const hasConflict = tableBookings.some((booking) => {
+  const bookingStart = new Date(booking.start_time + "Z")
+  const bookingEnd = new Date(booking.end_time  + "Z");
+
+
+  return slotStart < bookingEnd && slotEnd > bookingStart
+})
+
+    return !hasConflict
+  })
+}
 
 

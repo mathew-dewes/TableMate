@@ -6,6 +6,25 @@ import z from "zod";
 import { getUserBusiness } from "../queries/business";
 import { revalidatePath } from "next/cache";
 
+function timeStringToUtc(dayDate: Date, time: string): string {
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+  // build the date in NZT first
+  const nzDate = new Date(dayDate);
+  nzDate.setHours(hours, minutes, seconds || 0, 0);
+
+  // Convert to UTC ISO string for DB
+  return new Date(
+    Date.UTC(
+      nzDate.getFullYear(),
+      nzDate.getMonth(),
+      nzDate.getDate(),
+      nzDate.getHours(),
+      nzDate.getMinutes(),
+      nzDate.getSeconds()
+    )
+  ).toISOString();
+}
+
 export async function setAvailability(values: z.infer<typeof hoursSchema>) {
 
     try {

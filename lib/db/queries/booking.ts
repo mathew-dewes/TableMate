@@ -1,10 +1,15 @@
 "use server";
 
+
 import { createClientForServer } from "@/lib/supabase/server";
 
 
 export async function getExistingBookings(slug: string, startTime: Date, endTime: Date) {
   const supabase = await createClientForServer();
+
+  
+
+  
 
   const { data: business } = await supabase
     .from("Business")
