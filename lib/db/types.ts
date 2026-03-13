@@ -18,7 +18,11 @@ export type BusinessType = {
 export type AvailabilityType = {
     day_of_week: number,
     opening_time: string,
-    closing_time: string
+    closing_time: string,
+    booking_duration: number
 };
 
+export type ExistingBookings = {table_id: string, start_time: string, end_time: string};
+
+export type EligibleTables = { id: string, table_number: number, capacity: number };
 

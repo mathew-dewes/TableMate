@@ -2,33 +2,36 @@
 
 import { createClientForServer } from "@/lib/supabase/server";
 
-export async function getBookedTables(slug: string, startTime: Date) {
-    const supabase = await createClientForServer();
 
-    const endTime = new Date(startTime);
-    endTime.setMinutes(30);
+export async function getExistingBookings(slug: string, date: Date) {
+  const supabase = await createClientForServer();
 
-    const { data: business, error: businessError } = await supabase.from("Business").select("id").eq("slug", slug).single()
-    
-    if (businessError) {
-        console.log("Error:", businessError);
+  const { data: business } = await supabase
+    .from("Business")
+    .select("id")
+    .eq("slug", slug)
+    .single();
 
-        return { success: false, error: businessError };
+  if (!business) return [];
 
+  const startOfDay = new Date(date);
+  startOfDay.setHours(0, 0, 0, 0);
 
-    }
-    const { data, error } = await supabase.from("Booking").select("table_id").
-        eq("business_id", business?.id).
-        lt("start_time", startTime.toISOString()).
-        gt("end_time", endTime.toISOString());
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
 
-    if (error) {
-        console.log("Error:", error);
+  // Any booking that overlaps the day:
+  const { data, error } = await supabase
+    .from("Booking")
+    .select("table_id, start_time, end_time")
+    .eq("business_id", business.id)
+    .lt("start_time", endOfDay.toISOString()) // booking starts before day ends
+    .gt("end_time", startOfDay.toISOString()); // booking ends after day starts
 
-        return { success: false, error: error };
+  if (error) {
+    console.log(error);
+    return [];
+  }
 
-
-    }
-
-    return data
+  return data;
 }

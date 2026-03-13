@@ -140,6 +140,7 @@ export type Database = {
       Business: {
         Row: {
           address: string
+          booking_duration: number | null
           created_at: string
           description: string | null
           email: string
@@ -154,6 +155,7 @@ export type Database = {
         }
         Insert: {
           address: string
+          booking_duration?: number | null
           created_at?: string
           description?: string | null
           email: string
@@ -168,6 +170,7 @@ export type Database = {
         }
         Update: {
           address?: string
+          booking_duration?: number | null
           created_at?: string
           description?: string | null
           email?: string
@@ -181,35 +184,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
-      }
-      Settings: {
-        Row: {
-          booking_duration: number
-          business_id: string
-          created_at: string
-          id: string
-        }
-        Insert: {
-          booking_duration?: number
-          business_id?: string
-          created_at?: string
-          id?: string
-        }
-        Update: {
-          booking_duration?: number
-          business_id?: string
-          created_at?: string
-          id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "Settings_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "Business"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       Table: {
         Row: {

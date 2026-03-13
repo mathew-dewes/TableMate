@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { makeBooking } from "@/lib/db/mutations/booking";
 import { bookingFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -15,11 +16,13 @@ import z from "zod";
 
 type Props = {
     slug: string,
-    startTime: Date
+    startTime: Date,
+    table_number: string
 }
 
-export default function BookingForm({slug, startTime}: Props) {
+export default function BookingForm({slug, startTime, table_number}: Props) {
     const [isPending, startTransition] = useTransition();
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof bookingFormSchema>>({
         resolver: zodResolver(bookingFormSchema),
@@ -34,10 +37,11 @@ export default function BookingForm({slug, startTime}: Props) {
 
     function onSubmit(values: z.infer<typeof bookingFormSchema>) {
         startTransition((async () => {
-            const res = await makeBooking(values, slug, startTime);
+            const res = await makeBooking(values, slug, startTime, table_number);
 
             if (res.success){
-                toast.success(res.message)
+                toast.success(res.message);
+                router.push('/dashboard')
             } else {
                 toast.error(res.message)
             }
