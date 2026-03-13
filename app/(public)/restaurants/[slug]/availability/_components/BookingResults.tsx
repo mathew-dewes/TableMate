@@ -25,8 +25,8 @@ export default async function BookingResults({ selectedDay, partySize, slug }: P
     const opening = combineDateAndTime(queryDate, availablity.data!.opening_time)
     const closing = combineDateAndTime(queryDate, availablity.data!.closing_time);
     
-    const bookings = await getExistingBookings(slug, opening, closing);   
-
+    const bookings = await getExistingBookings(slug, opening, closing);  
+    
     const slots = generateSlots(
         queryDate,
         availablity.data!.opening_time,
