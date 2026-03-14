@@ -1,5 +1,5 @@
 import z from "zod";
-import { NZ_REGIONS } from "./contants";
+import { DURATION_MINUTES, NZ_REGIONS } from "./contants";
 
 export const loginFormSchema = z.object({
   email: z.email('Please enter a valid email address'),
@@ -28,7 +28,8 @@ export const businessDetailsFormSchema = z.object({
   email: z.email('Please enter a valid email address'),
   address: z.string().min(5).max(20),
   phone: z.string().min(8).max(20),
-  region: z.enum(NZ_REGIONS, "Please select a region")
+  region: z.enum(NZ_REGIONS, "Please select a region"),
+  booking_duration: z.enum(DURATION_MINUTES, "Please select booking duration")
 });
 
 

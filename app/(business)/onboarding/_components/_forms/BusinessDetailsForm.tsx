@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NZ_REGIONS } from "@/lib/contants";
@@ -210,9 +210,39 @@ export default function BusinessDetailsForm({ name, email, address, phone, regio
                                             <FieldError errors={[fieldState.error]} />
                                         )}
                                     </Field>
-                                )}
+                                )}/>
+                            <Controller
+                                control={form.control}
+                                name="booking_duration"
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel>Booking duration:</FieldLabel>
+                                        <FieldDescription>Duration in minutes for booking slots</FieldDescription>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
 
-                            />
+                                        >
+                                            <SelectTrigger className="w-full max-w-48">
+                                                <SelectValue placeholder="Select a region" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Fruits</SelectLabel>
+                                                    {["30", "60", "90", "120"].map((region) => {
+                                                        return <SelectItem key={region} value={region}>{region}</SelectItem>
+                                                    })}
+
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}/>
+
+                                
                             {form.formState.errors.root && (
                                 <p className="text-sm text-red-500 font-medium">
                                     {form.formState.errors.root.message}

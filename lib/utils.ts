@@ -114,8 +114,8 @@ export function getAvailableTables(
     )
 
 const hasConflict = tableBookings.some((booking) => {
-  const bookingStart = new Date(booking.start_time + "Z")
-  const bookingEnd = new Date(booking.end_time  + "Z");
+  const bookingStart = new Date(booking.start_time)
+  const bookingEnd = new Date(booking.end_time);
 
 
   return slotStart < bookingEnd && slotEnd > bookingStart

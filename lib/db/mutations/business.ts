@@ -48,7 +48,8 @@ export async function createBusiness(values: z.infer<typeof businessDetailsFormS
             email: parsed.data.email,
             slug: createSlug(parsed.data.name),
             phone: parsed.data.phone,
-            setup_step
+            setup_step,
+            booking_duration: Number(parsed.data.booking_duration)
 
         }, { onConflict: "user_id" });
 

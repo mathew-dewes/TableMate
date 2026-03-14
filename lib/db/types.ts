@@ -26,3 +26,13 @@ export type ExistingBookings = {table_id: string, start_time: string, end_time: 
 
 export type EligibleTables = { id: string, table_number: number, capacity: number };
 
+export type UserBooking = {
+    id: string;
+    guest_name: string;
+    guest_email: string;
+    guest_phone: string | null;
+    party_size: number;
+    start_time: string;
+    end_time: string;
+    notes: string | null;
+}

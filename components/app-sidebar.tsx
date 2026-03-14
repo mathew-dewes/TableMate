@@ -35,7 +35,7 @@ const data = {
       items: [
         {
           title: "View and manage",
-          url: "#",
+          url: "/dashboard/bookings",
         },
    
         {
