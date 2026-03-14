@@ -77,7 +77,7 @@ export type Database = {
       Booking: {
         Row: {
           business_id: string
-          created_at: string
+          created_at: string | null
           end_time: string
           guest_email: string
           guest_name: string
@@ -92,7 +92,7 @@ export type Database = {
         }
         Insert: {
           business_id?: string
-          created_at?: string
+          created_at?: string | null
           end_time: string
           guest_email: string
           guest_name: string
@@ -107,7 +107,7 @@ export type Database = {
         }
         Update: {
           business_id?: string
-          created_at?: string
+          created_at?: string | null
           end_time?: string
           guest_email?: string
           guest_name?: string
@@ -140,7 +140,7 @@ export type Database = {
       Business: {
         Row: {
           address: string
-          booking_duration: number | null
+          booking_duration: number
           created_at: string
           description: string | null
           email: string
@@ -155,7 +155,7 @@ export type Database = {
         }
         Insert: {
           address: string
-          booking_duration?: number | null
+          booking_duration: number
           created_at?: string
           description?: string | null
           email: string
@@ -170,7 +170,7 @@ export type Database = {
         }
         Update: {
           address?: string
-          booking_duration?: number | null
+          booking_duration?: number
           created_at?: string
           description?: string | null
           email?: string

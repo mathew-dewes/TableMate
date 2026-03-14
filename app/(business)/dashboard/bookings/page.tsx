@@ -1,7 +1,9 @@
+import { BookingTable } from "./_components/BookingTable";
+
 export default function page(){
     return (
         <div>
-            <p>Dashboard booking page</p>
+            <BookingTable/>
         </div>
     )
 }

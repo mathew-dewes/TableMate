@@ -17,3 +17,6 @@ export const NZ_REGIONS = [
   "Southland"
 ];
 
+
+export const DURATION_MINUTES = ["30", "60", "90", "120", "150", "180"]
+
