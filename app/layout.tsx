@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/web/Navbar";
 
 const montserratHeading = Montserrat({subsets:['latin'],variable:'--font-heading'});
 
@@ -23,7 +24,13 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", inter.variable, montserratHeading.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar/>
+        <main className="md:mx-10 lg:mx-20 mx-5 my-10 flex-1">
+     {children}
+        </main>
+   
+        </body>
     </html>
   );
 }
