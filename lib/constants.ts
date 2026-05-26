@@ -5,3 +5,10 @@ export const dashboardLinks = [
     {label:"Analytics", href: "/dashboard/analytics"},
     {label:"Settings", href: "/dashboard/settings"},
 ];
+
+
+export const navLinks = [
+    {label: "Dashboard", href: "/dashboard"},
+    {label: "Login", href: "/login"},
+    {label: "Register", href: "/register"}
+]
