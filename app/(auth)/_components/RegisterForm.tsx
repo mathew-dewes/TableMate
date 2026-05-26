@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import Link from "next/link";
 
 export function RegisterForm({
   className,
@@ -102,7 +103,7 @@ export function RegisterForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <a href="#">Sign up</a>
+                Already have an account? <Link href="/login">Login</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
