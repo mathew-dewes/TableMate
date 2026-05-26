@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
+import DashboardLinks from "./_components/DashboardLinks";
 
 export default function BlogLayout({
     children,
@@ -8,10 +7,7 @@ export default function BlogLayout({
 }) {
     return (
         <section>
-            <ButtonGroup>
-                <Button variant="outline">Archive</Button>
-                <Button variant="outline">Report</Button>
-            </ButtonGroup>
+          <DashboardLinks/>
             {children}
         </section>)
 }
