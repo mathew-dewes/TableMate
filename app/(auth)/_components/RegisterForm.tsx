@@ -1,9 +1,12 @@
+"use client";
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
@@ -11,16 +14,53 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
+import { Controller, useForm } from "react-hook-form";
+import { registerSchema } from "@/lib/schemas";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      password: "",
+      email: "",
+      confirmPassword: ""
+    },
+
+  });
+
+  function onSubmit(values: z.infer<typeof registerSchema>) {
+    
+    console.log(values);
+    
+    toast("You submitted the following values:", {
+      description: (
+        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
+          <code>{JSON.stringify(values, null, 2)}</code>
+        </pre>
+      ),
+      position: "bottom-right",
+      classNames: {
+        content: "flex flex-col gap-2",
+      },
+      style: {
+        "--border-radius": "calc(var(--radius)  + 4px)",
+      } as React.CSSProperties,
+    })
+  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Register</h1>
@@ -28,47 +68,113 @@ export function RegisterForm({
                   Enter the required details to create an account
                 </p>
               </div>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
+              <Controller
+                control={form.control}
+                name="firstName"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="firstName">First name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="firstName"
+                      type="text"
+                      placeholder="Enter first name"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+
+              <Controller
+                control={form.control}
+                name="lastName"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email">Last name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="lastName"
+                      type="text"
+                      placeholder="Enter last name"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+
+                )}
+              />
+
+              <Controller
+                control={form.control}
+                name="email"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email">Email address</FieldLabel>
+                    <Input
+                      {...field}
+                      id="email"
+                      type="text"
+                      placeholder="Enter email address"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+
+                )}
+              />
+
+              <Controller
+              control={form.control}
+              name="password"
+              render={({field, fieldState})=>(
+          <Field data-invalid={fieldState.invalid}>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id="password" 
+                type="password" 
+                placeholder="Enter password" />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
               </Field>
+              )}
+              />
+        
+         
+           <Controller
+              control={form.control}
+              name="confirmPassword"
+              render={({field, fieldState})=>(
+          <Field data-invalid={fieldState.invalid}>
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="confirmPassword">Confirm password</FieldLabel>
+                </div>
+                <Input 
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id="confirmPassword" 
+                type="password" 
+                placeholder="Confirm password" />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+              </Field>
+              )}
+              />
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Register</Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -111,6 +217,8 @@ export function RegisterForm({
             <Image fill
               src="/image.jpg"
               alt="Image"
+              loading="eager"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>

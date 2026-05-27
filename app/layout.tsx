@@ -3,6 +3,8 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/web/Navbar";
+import { Toaster } from "@/components/ui/sonner";
+
 
 const montserratHeading = Montserrat({subsets:['latin'],variable:'--font-heading'});
 
@@ -29,6 +31,7 @@ export default function RootLayout({
         <main className="md:mx-10 lg:mx-20 mx-5 my-10 flex-1">
      {children}
         </main>
+        <Toaster/>
    
         </body>
     </html>
