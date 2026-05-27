@@ -57,6 +57,12 @@ const isProtectedRoute = protectedRoutes.some((route) =>
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  };
+
+  if (pathname == '/' && user){
+       const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

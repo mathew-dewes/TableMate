@@ -1,3 +1,5 @@
+"use server";
+
 import { getUserId } from "../authActions";
 import { createClientForServer } from "../server";
 
