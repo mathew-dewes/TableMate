@@ -88,4 +88,14 @@ export async function SignOut() {
     }
 };
 
+export async function getUserId(){
+  const supabase = await createClientForServer();
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error){
+    console.log(error);
+    }
+    return data.user?.id ?? null;
+};
+
 

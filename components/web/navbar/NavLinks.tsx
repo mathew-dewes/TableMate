@@ -7,7 +7,9 @@ import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import SignOutButton from "./SignoutButton";
 
-export default function NavLinks() {
+export default function NavLinks({ session }:
+    { session: boolean}
+) {
 
     const authenticated = false;
 
@@ -23,6 +25,7 @@ export default function NavLinks() {
                 if (!authenticated && link.href == "/dashboard") return null;
                 return (
                     <Link
+                    hidden={session}
                         key={link.label}
                         className={buttonVariants(
                             { variant: path.startsWith(link.href) ? "secondary" : "ghost" })}
@@ -30,7 +33,7 @@ export default function NavLinks() {
                     >{link.label}</Link>
                 )
             })}
-            <SignOutButton session={true}/>
+            <SignOutButton session={session}/>
 
         </ul>
     )
