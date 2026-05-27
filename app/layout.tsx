@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/web/Navbar";
+
 import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/components/web/navbar/Navbar";
 
 
 const montserratHeading = Montserrat({subsets:['latin'],variable:'--font-heading'});

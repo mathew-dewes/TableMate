@@ -19,42 +19,35 @@ import { registerSchema } from "@/lib/schemas";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { signUpWithEmailPassword } from "@/lib/supabase/authActions";
+import { useTransition } from "react";
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      password: "",
       email: "",
+      password: "",
       confirmPassword: ""
     },
 
   });
 
   function onSubmit(values: z.infer<typeof registerSchema>) {
-    
-    console.log(values);
-    
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
-    })
+    startTransition((async()=>{
+    const res = await signUpWithEmailPassword(values);
+
+    if (!res.success){
+      toast.error(res.message)
+    } else {
+      toast.success(res.message)
+    }
+    }))
+
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -68,47 +61,6 @@ export function RegisterForm({
                   Enter the required details to create an account
                 </p>
               </div>
-              <Controller
-                control={form.control}
-                name="firstName"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="firstName">First name</FieldLabel>
-                    <Input
-                      {...field}
-                      id="firstName"
-                      type="text"
-                      placeholder="Enter first name"
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-
-              <Controller
-                control={form.control}
-                name="lastName"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="email">Last name</FieldLabel>
-                    <Input
-                      {...field}
-                      id="lastName"
-                      type="text"
-                      placeholder="Enter last name"
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-
-                )}
-              />
 
               <Controller
                 control={form.control}
@@ -174,7 +126,7 @@ export function RegisterForm({
               )}
               />
               <Field>
-                <Button type="submit">Register</Button>
+                <Button disabled={isPending} type="submit">Register</Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with

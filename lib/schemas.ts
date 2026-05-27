@@ -7,16 +7,6 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
-    firstName: z
-      .string()
-      .min(3, "First name must be 3 or more characters")
-      .max(20, "First name must be 20 characters or less"),
-
-    lastName: z
-      .string()
-      .min(3, "Last name must be 3 or more characters")
-      .max(20, "Last name must be 20 characters or less"),
-
     email: z
       .email(),
 

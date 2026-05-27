@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link"
-import { buttonVariants } from "../ui/button"
+
 import { navLinks } from "@/lib/constants"
 import { usePathname } from "next/navigation";
+import { buttonVariants } from "@/components/ui/button";
+import SignOutButton from "./SignoutButton";
 
 export default function NavLinks() {
 
@@ -28,6 +30,7 @@ export default function NavLinks() {
                     >{link.label}</Link>
                 )
             })}
+            <SignOutButton session={true}/>
 
         </ul>
     )

@@ -19,12 +19,17 @@ import { loginSchema } from "@/lib/schemas";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { signInWithEmailPassword } from "@/lib/supabase/authActions";
+
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter()
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -34,20 +39,20 @@ export function LoginForm({
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
-    })
+        startTransition(async () => {
+            const res = await signInWithEmailPassword(values);
+
+            if (!res.success) {
+                toast.error(res.message)
+            } else {
+                toast.success(res.message);
+                router.push('/dashboard')
+
+            }
+
+
+
+        })
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -114,7 +119,7 @@ export function LoginForm({
 
 
               <Field>
-                <Button type="submit">Login</Button>
+                <Button disabled={isPending} type="submit">Login</Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
