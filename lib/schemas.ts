@@ -34,3 +34,21 @@ export const registerSchema = z
       address: z.string().min(1, "Address is required"),
       description: z.string().max(100, "Description must be 100 characters or less").optional()
   });
+
+
+  const daySchema = z.object({
+      day_of_week: z.string(),
+      open: z.number().nullable(),
+      close: z.number().nullable(),
+      is_open: z.boolean().optional()
+  }).refine(data => {
+      if (!data.is_open) return true;
+  
+      return data.close! > data.open!;
+  }, {
+      message: "Closing time must be after opening time"
+  });
+  
+  export const businessHoursSchema = z.object({
+      hours: z.array(daySchema)
+  });

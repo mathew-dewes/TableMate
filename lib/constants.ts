@@ -11,4 +11,14 @@ export const navLinks = [
     {label: "Dashboard", href: "/dashboard"},
     {label: "Login", href: "/login"},
     {label: "Register", href: "/register"}
-]
+];
+
+export const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
+];
