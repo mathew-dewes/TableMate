@@ -1,9 +1,9 @@
-import SetupClient from "./_components/SetupClient";
+import Setup from "./_components/Setup";
 
 export default function page(){
     return(
         <div>
-          <SetupClient/>
+          <Setup/>
         </div>
     )
 }

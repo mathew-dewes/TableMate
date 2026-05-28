@@ -13,7 +13,7 @@ import { Business } from "@/lib/types"
 import Image from "next/image"
 import Link from "next/link"
 
-export function BusinessCard({name, email, phone, description, suburb}: Business) {
+export function BusinessCard({name, email, phone, description}: Business) {
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
@@ -25,7 +25,7 @@ export function BusinessCard({name, email, phone, description, suburb}: Business
       />
       <CardHeader>
         <CardAction>
-          <Badge variant="secondary">{suburb}</Badge>
+          <Badge className="bg-green-400">OPEN</Badge>
         </CardAction>
         <CardTitle>{name}</CardTitle>
         <CardDescription>

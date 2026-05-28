@@ -22,3 +22,15 @@ export const registerSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+
+  const phoneRegex = new RegExp(
+    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+  );
+  
+ export const businessFormSchema = z.object({
+      name: z.string().min(1, "Name is required"),
+      phone: z.string().min(1, "Phone number is required").regex(phoneRegex, "Invalid phone number"),
+      address: z.string().min(1, "Address is required"),
+      description: z.string().max(100, "Description must be 100 characters or less").optional()
+  });

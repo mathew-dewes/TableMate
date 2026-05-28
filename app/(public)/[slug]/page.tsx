@@ -9,7 +9,6 @@ export default function page(){
             phone="1234" 
             email="matt@gmail.com"
             description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti, esse."
-            suburb="Glenfield"
             />
 
             
