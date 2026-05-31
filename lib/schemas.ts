@@ -36,6 +36,14 @@ export const registerSchema = z
   });
 
 
+  export const settingsFormSchema = z.object({
+    slot_interval_minutes: z.number(),
+    booking_duration: z.number(),
+    max_party_size: z.number(),
+    max_future_booking_days: z.number()
+  })
+
+
   const daySchema = z.object({
       day_of_week: z.string(),
       open: z.number().nullable(),
