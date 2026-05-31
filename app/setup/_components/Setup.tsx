@@ -1,37 +1,57 @@
 
+import { buildSetupProgress, generateSetupPercentage, getCurrentStep } from "@/lib/utils";
 import BusinessForm from "./business/BusinessForm";
 import HoursForm from "./hours/HoursForm";
 import SettingsForm from "./settings/SettingsForm";
 import TablesForm from "./tables/TablesForm";
-import { getUserBusiness } from "@/lib/supabase/queries/business";
-import { Business } from "@/lib/types";
+import { getSetUpProgress } from "@/lib/supabase/queries/setup";
+import { ProgressCheck } from "@/lib/types";
+import { ProgressBar } from "./ProgressBar";
+
 
 
 
 export default async function Setup() {
-  const business = await getUserBusiness() as Business;
+  const data = await getSetUpProgress() as ProgressCheck;
+  const progress = buildSetupProgress(data);
+
+  const step = getCurrentStep(progress);
+
+  const setupPercentage = generateSetupPercentage(step);
 
 
-const step = business?.setup_step ?? 1;
+
 
   return (
-    <>
-      {step === 1 && (
-        <BusinessForm />
-      )}
+    <div>
+      <div>
+        <ProgressBar progress={setupPercentage ?? 0} />
 
-      {step === 2 && (
-        <HoursForm />
-      )}
+      </div>
 
-      {step === 3 && (
-        <SettingsForm />
-      )}
+      <div className="mt-5">
+        {step === "business" && (
+          <BusinessForm />
+        )}
 
-      {step === 4 && (
-        <TablesForm />
-      )}
-    </>
+        {step === "hours" && (
+          <HoursForm />
+        )}
+
+        {step === "settings" && (
+          <SettingsForm />
+        )}
+
+        {step === "tables" && (
+          <TablesForm />
+        )}
+
+      </div>
+
+
+    </div>
+
+
   )
 
 }

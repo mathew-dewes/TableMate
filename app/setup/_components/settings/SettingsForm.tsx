@@ -14,9 +14,11 @@ import PartySizeSelector from "./PartySizeSelector";
 import FutureBookingDaysSelector from "./FutureBookingDaysSelector";
 import { setBusinessSettings } from "@/lib/supabase/mutations/settings";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SettingsForm() {
 const [isPending, startTransition] = useTransition();
+const router = useRouter();
     const form = useForm<z.infer<typeof settingsFormSchema>>({
         resolver: zodResolver(settingsFormSchema),
         defaultValues: {
@@ -35,7 +37,8 @@ const [isPending, startTransition] = useTransition();
        if (!res.success){
         toast.error(res.message)
        } else {
-        toast.success(res.message)
+        toast.success(res.message);
+        router.refresh();
 
        }
         
