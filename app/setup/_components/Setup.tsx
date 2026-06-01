@@ -7,6 +7,7 @@ import TablesForm from "./tables/TablesForm";
 import { getSetUpProgress } from "@/lib/supabase/queries/setup";
 import { ProgressCheck } from "@/lib/types";
 import { ProgressBar } from "./ProgressBar";
+import FinalReview from "./FinalReview";
 
 
 
@@ -46,7 +47,7 @@ export default async function Setup() {
           <TablesForm />
         )}
         {step === "complete" && (
-         <p>Final overview!</p>
+         <FinalReview/>
         )}
 
       </div>
