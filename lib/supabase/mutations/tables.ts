@@ -1,16 +1,19 @@
 "use server";
 
-import { businessHoursSchema } from "@/lib/schemas";
+import { tablesFormSchema } from "@/lib/schemas";
 import z from "zod";
 import { createClientForServer } from "../server";
 import { getUserId } from "../authActions";
+import { getUserBusinessId } from "../queries/business";
 
-export async function setBusinessHours(values: z.infer<typeof businessHoursSchema>) {
+
+export async function addTables(values: z.infer<typeof tablesFormSchema>) {
     const supabase = await createClientForServer();
     const user_id = await getUserId();
 
-    const parsed = businessHoursSchema.safeParse(values);
-if (!user_id) {
+    const parsed = tablesFormSchema.safeParse(values);
+
+    if (!user_id) {
         return {
             success: false,
             message: "Unauthorized"
@@ -24,18 +27,20 @@ if (!user_id) {
 
         }
     };
-    
+
     const business_id = await getUserBusinessId() as string;
-    
 
-  const rows = parsed.data?.hours.map((hour) => ({
-  business_id,
-  open: hour.open ?? 0,
-  close: hour.close ?? 0,
-  day_of_week: hour.day_of_week,
-}));
+    const tables = Array.from(
+        { length: parsed.data.total_tables },
+        (_, index) => ({
+            business_id,
+            max_capacity: parsed.data.max_capacity,
+            min_capacity: parsed.data.min_capacity,
+            number: index + 1,
+        })
+    );
 
-    const { error } = await supabase.from("Business_hours").insert(rows);
+    const { error } = await supabase.from("Tables").insert(tables);
 
 
     if (error) {
@@ -49,12 +54,8 @@ if (!user_id) {
 
     return {
         success: true,
-        message: `Business hours added`
+        message: `${parsed.data.total_tables} Tables were added`
     }
 
 
 };
-
-function getUserBusinessId(): string | PromiseLike<string> {
-    throw new Error("Function not implemented.");
-}

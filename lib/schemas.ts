@@ -41,7 +41,15 @@ export const registerSchema = z
     booking_duration: z.number(),
     max_party_size: z.number(),
     max_future_booking_days: z.number()
-  })
+  });
+
+
+  export const tablesFormSchema = z.object({
+    total_tables: z.number(),
+    max_capacity: z.number(),
+    min_capacity: z.number()
+  });
+
 
 
   const daySchema = z.object({

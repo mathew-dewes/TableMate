@@ -50,4 +50,7 @@ export const FUTURE_BOOKING_WINDOW = [
     {label: "14 days", value: 14},
     {label: "21 days", value: 21},
     {label: "28 days", value: 28},
-]
+];
+
+
+export const CAPACITIES = [1, 2, 3, 4, 5, 6];

@@ -111,4 +111,5 @@ if (step == "business") return 0;
 else if (step == "hours") return 25;
 else if (step == "settings") return 50;
 else if (step == "tables") return 75;
+else if (step == "complete") return 95;
 }

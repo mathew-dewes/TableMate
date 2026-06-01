@@ -45,6 +45,9 @@ export default async function Setup() {
         {step === "tables" && (
           <TablesForm />
         )}
+        {step === "complete" && (
+         <p>Final overview!</p>
+        )}
 
       </div>
 

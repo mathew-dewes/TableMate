@@ -4,6 +4,7 @@ import { settingsFormSchema } from "@/lib/schemas";
 import { getUserId } from "../authActions";
 import { createClientForServer } from "../server";
 import z from "zod";
+import { getUserBusinessId } from "../queries/business";
 
 export async function setBusinessSettings(values: z.infer<typeof settingsFormSchema>) {
     const supabase = await createClientForServer();
@@ -26,28 +27,7 @@ export async function setBusinessSettings(values: z.infer<typeof settingsFormSch
         }
     };
 
-        const {data: business, error: businessError} = await supabase.from("Business")
-    .select("id")
-    .eq("user_id", user_id)
-    .maybeSingle()
-
-
-
-         if (businessError) {
-        console.log(businessError);
-        return {
-            success: false,
-            message: businessError.message
-        }
-
-    };
-    
-    if (!business){
-         return {
-            success: false,
-            message: "No business found"
-        }
-}
+const business_id = await getUserBusinessId() as string;
 
     const {
         slot_interval_minutes: slots,
@@ -62,7 +42,7 @@ export async function setBusinessSettings(values: z.infer<typeof settingsFormSch
       booking_duration: booking_duration,
       max_future_booking_days: maxDays,
       max_party_size: maxParty,
-      business_id: business.id
+      business_id
     });
 
 
