@@ -29,7 +29,7 @@ export default function BusinessReviewCard({business}:
         </CardContent>
 
    <CardFooter className="flex justify-end">
-    <Link className={buttonVariants()} href={'/setup/edit/business'}>Edit details</Link>
+    <Link className={buttonVariants()} href={'/setup/edit?details=business'}>Edit details</Link>
         </CardFooter>
 
        </Card>

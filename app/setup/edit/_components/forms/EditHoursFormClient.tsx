@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import TimeSelector from "@/app/setup/_components/hours/TimeSelector";
 
 
-export default function HoursFormClient() {
+export default function EditHoursFormClient() {
     const router = useRouter();
     const [isPending, startTransition] = useTransition()
     const form = useForm<z.infer<typeof businessHoursSchema>>({

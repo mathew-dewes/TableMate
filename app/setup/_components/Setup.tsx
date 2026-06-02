@@ -9,9 +9,6 @@ import { ProgressCheck } from "@/lib/types";
 import { ProgressBar } from "./ProgressBar";
 import FinalReview from "./review/FinalReview";
 
-
-
-
 export default async function Setup() {
   const data = await getSetUpProgress() as ProgressCheck;
   const progress = buildSetupProgress(data);

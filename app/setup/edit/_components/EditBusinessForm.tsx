@@ -1,5 +1,5 @@
 import { getUserBusiness } from "@/lib/supabase/queries/business";
-import EditBusinessFormClient from "./EditBusinessFormClient";
+import EditBusinessFormClient from "./forms/EditBusinessFormClient";
 import { Business } from "@/lib/types";
 
 export default async function EditBusinessForm(){

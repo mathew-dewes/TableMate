@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { ProgressCheck, setupProgress, setupStep } from "./types";
-
+import { format } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -52,7 +52,7 @@ export function buildSetupProgress(data: ProgressCheck | null ){
             data.Business_hours[0]?.count === 7,
 
         settings:
-            data.Settings[0]?.count > 0,
+            data.Settings ?.count > 0,
 
         tables:
             data.Tables[0]?.count > 0
@@ -112,4 +112,11 @@ else if (step == "hours") return 25;
 else if (step == "settings") return 50;
 else if (step == "tables") return 75;
 else if (step == "complete") return 95;
+};
+
+export function minutesToTime(minutes: number) {
+  const date = new Date();
+  date.setHours(0, minutes, 0, 0);
+
+  return format(date, 'h:mm a');
 }

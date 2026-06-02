@@ -17,7 +17,11 @@ export async function getUserBusiness() {
         }
     };
     const { data, error } = await supabase.from("Business")
-        .select("id, name, phone, description, address, publish, email")
+        .select(`id, name, phone, description, address, publish, email, 
+            Tables(id, number, max_capacity, min_capacity), 
+            Business_hours(open, close, day_of_week),
+            Settings(id, slot_interval_minutes, booking_duration, max_party_size, max_future_booking_days)
+            `)
         .eq("user_id", user_id)
         .maybeSingle();
 
