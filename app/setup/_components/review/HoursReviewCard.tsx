@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+
 
 export default function HoursReviewCard(){
     return (
@@ -21,7 +23,7 @@ export default function HoursReviewCard(){
         </CardContent>
 
        <CardFooter className="flex justify-end">
-            <Button>Edit details</Button>
+           <Link className={buttonVariants()} href={'/setup/edit/hours'}>Edit details</Link>
         </CardFooter>
 
        </Card>

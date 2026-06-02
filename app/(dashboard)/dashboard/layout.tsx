@@ -16,7 +16,7 @@ const business = await getUserBusiness() as Business;
         redirect('/setup')
     };
 
-    if (!business.setup_completed) {
+    if (!business.publish) {
   redirect("/setup");
 }
     

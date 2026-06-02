@@ -30,6 +30,7 @@ export const registerSchema = z
   
  export const businessFormSchema = z.object({
       name: z.string().min(1, "Name is required"),
+      email: z.email().min(1, "Email is required"),
       phone: z.string().min(1, "Phone number is required").regex(phoneRegex, "Invalid phone number"),
       address: z.string().min(1, "Address is required"),
       description: z.string().max(100, "Description must be 100 characters or less").optional()

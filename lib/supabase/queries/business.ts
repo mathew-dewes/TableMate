@@ -17,7 +17,7 @@ export async function getUserBusiness() {
         }
     };
     const { data, error } = await supabase.from("Business")
-        .select()
+        .select("id, name, phone, description, address, publish, email")
         .eq("user_id", user_id)
         .maybeSingle();
 

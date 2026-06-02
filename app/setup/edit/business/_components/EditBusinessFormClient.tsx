@@ -6,7 +6,8 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/c
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from "@/components/ui/input-group";
 import { businessFormSchema } from "@/lib/schemas";
-import { createBusiness } from "@/lib/supabase/mutations/business";
+import { editBusiness } from "@/lib/supabase/mutations/business";
+import { Business } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -14,30 +15,33 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-export default function BusinessForm() {
+export default function EditBusinessFormClient({business}:
+    {business: Business}
+) {
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
     const form = useForm<z.infer<typeof businessFormSchema>>(
         {
             resolver: zodResolver(businessFormSchema),
             defaultValues: {
-                name: "",
-                phone: "",
-                address: "",
-                description: ""
+                name: business.name,
+                email: business.email,
+                phone: business.phone,
+                address: business.address,
+                description: business.description ?? undefined
             }
         }
     );
 
     function onSubmit(values: z.infer<typeof businessFormSchema>) {
         startTransition((async () => {
-         const res = await createBusiness(values);
+         const res = await editBusiness(values);
 
          if (!res.success){
             toast.error(res.message);
          } else {
             toast.success(res.message);
-            router.refresh();
+            router.push('/setup');
             
          }
 
@@ -46,7 +50,7 @@ export default function BusinessForm() {
     return (
         <Card className="w-full sm:max-w-md">
             <CardHeader>
-                <CardTitle>Business Form</CardTitle>
+                <CardTitle>Edit Business</CardTitle>
                 <CardDescription>Enter the required details</CardDescription>
             </CardHeader>
 
@@ -75,7 +79,8 @@ export default function BusinessForm() {
 
                             )}
                         />
-                        <Controller
+
+                                                <Controller
                             control={form.control}
                             name="email"
                             render={({ field, fieldState }) => (
@@ -178,11 +183,8 @@ export default function BusinessForm() {
 
             <CardFooter>
                 <Field orientation="horizontal">
-                    <Button type="button" variant="outline" onClick={() => form.reset()}>
-                        Reset
-                    </Button>
                     <Button disabled={isPending} type="submit" form="businessForm">
-                        Submit
+                        Update
                     </Button>
                 </Field>
             </CardFooter>

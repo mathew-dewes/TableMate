@@ -33,6 +33,7 @@ export async function createBusiness(values: z.infer<typeof businessFormSchema>)
         address: parsed.data.address,
         description: parsed.data.description,
         slug: parsed.data.name,
+        email: parsed.data.email,
         user_id,
     });
 
@@ -49,6 +50,64 @@ export async function createBusiness(values: z.infer<typeof businessFormSchema>)
     return {
         success: true,
         message: `${parsed.data.name} was added`
+    }
+
+
+};
+
+export async function editBusiness(values: z.infer<typeof businessFormSchema>) {
+    const supabase = await createClientForServer();
+    const user_id = await getUserId();
+
+    const parsed = businessFormSchema.safeParse(values);
+
+    if (!user_id) {
+        return {
+            success: false,
+            message: "Unauthorized"
+        }
+    };
+
+    if (!parsed.success) {
+        return {
+            success: false,
+            message: "Validation failed"
+
+        }
+    };
+
+    
+    const business_id = await getUserBusinessId() as string;
+
+    if (!business_id) {
+        return {
+            success: false,
+            message: "Business not found"
+        }
+    };
+
+    const { error } = await supabase.from("Business").update({
+        name: parsed.data.name,
+        phone: parsed.data.phone,
+        address: parsed.data.address,
+        description: parsed.data.description,
+        slug: parsed.data.name,
+        user_id,
+    }).eq("user_id", user_id).eq("id", business_id);
+
+
+    if (error) {
+        console.log(error);
+        return {
+            success: false,
+            message: error.message
+        }
+
+    };
+
+    return {
+        success: true,
+        message: `Business details updated`
     }
 
 
@@ -118,7 +177,7 @@ export async function publishBusiness(){
     };
 
 
-    const {error} = await supabase.from("Business").update({"setup_completed": true})
+    const {error} = await supabase.from("Business").update({"publish": true})
     .eq("id", business_id);
 
 

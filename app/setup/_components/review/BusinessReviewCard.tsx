@@ -1,8 +1,12 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Business } from "@/lib/types";
+import Link from "next/link";
 
 
-export default function BusinessReviewCard(){
+export default function BusinessReviewCard({business}:
+    {business: Business}
+){
     return (
          <Card className="w-full max-w-2xl">
         <CardHeader>
@@ -11,14 +15,12 @@ export default function BusinessReviewCard(){
         </CardHeader>
 
         <CardContent>
-  
                 <ul>
-            
-                    <li>Name: Hello World</li>
-                    <li>Phone: 1234</li>
-                    <li>email: example@gmail.com</li>
-                    <li>Address: 123 example street</li>
-                    <li>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia ea porro tenetur suscipit doloribus accusantium modi voluptates ipsam, animi inventore!</li>
+                    <li>Name: {business.name}</li>
+                    <li>Phone: {business.phone}</li>
+                    <li>email: {business.email}</li>
+                    <li>Address: {business.address}</li>
+                    <li>Description: {business.description}</li>
             
                 </ul>
    
@@ -27,7 +29,7 @@ export default function BusinessReviewCard(){
         </CardContent>
 
    <CardFooter className="flex justify-end">
-            <Button>Edit details</Button>
+    <Link className={buttonVariants()} href={'/setup/edit/business'}>Edit details</Link>
         </CardFooter>
 
        </Card>

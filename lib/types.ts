@@ -1,15 +1,11 @@
 export type Business = {
-    address: string;
-    created_at?: string;
-    description: string | null;
-    email: string;
-    id?: string;
+    id: string;
     name: string;
     phone: string;
-    setup_completed?: boolean | null;
-    setup_step: number
-    slug?: string;
-    user_id?: string;
+    description: string | null;
+    address: string;
+    publish: boolean;
+    email: string;
 };
 
 
