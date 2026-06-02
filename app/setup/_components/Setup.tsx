@@ -7,7 +7,7 @@ import TablesForm from "./tables/TablesForm";
 import { getSetUpProgress } from "@/lib/supabase/queries/setup";
 import { ProgressCheck } from "@/lib/types";
 import { ProgressBar } from "./ProgressBar";
-import FinalReview from "./FinalReview";
+import FinalReview from "./review/FinalReview";
 
 
 

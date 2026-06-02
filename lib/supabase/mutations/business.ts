@@ -4,6 +4,7 @@ import { businessFormSchema } from "@/lib/schemas";
 import { getUserId } from "../authActions";
 import { createClientForServer } from "../server";
 import z from "zod";
+import { getUserBusinessId } from "../queries/business";
 
 export async function createBusiness(values: z.infer<typeof businessFormSchema>) {
     const supabase = await createClientForServer();
@@ -33,7 +34,6 @@ export async function createBusiness(values: z.infer<typeof businessFormSchema>)
         description: parsed.data.description,
         slug: parsed.data.name,
         user_id,
-        setup_step: 2
     });
 
 
@@ -54,10 +54,11 @@ export async function createBusiness(values: z.infer<typeof businessFormSchema>)
 
 };
 
-
-export async function updateSetupStep(step: number) {
+export async function deleteBusiness(){
     const supabase = await createClientForServer();
     const user_id = await getUserId();
+
+
     if (!user_id) {
         return {
             success: false,
@@ -65,9 +66,17 @@ export async function updateSetupStep(step: number) {
         }
     };
 
+    const business_id = await getUserBusinessId() as string;
 
-    const { error } = await supabase.from("Business").update(
-        {setup_step: step}).eq("user_id", user_id);
+    if (!business_id) {
+        return {
+            success: false,
+            message: "Business not found"
+        }
+    };
+
+
+    const {error} = await supabase.from("Business").delete().eq("id", business_id);
 
 
     if (error) {
@@ -79,6 +88,52 @@ export async function updateSetupStep(step: number) {
 
     };
 
+    return {
+        success: true,
+        message: `Business was removed`
+    }
+
+};
 
 
+export async function publishBusiness(){
+       const supabase = await createClientForServer();
+    const user_id = await getUserId();
+
+
+    if (!user_id) {
+        return {
+            success: false,
+            message: "Unauthorized"
+        }
+    };
+
+    const business_id = await getUserBusinessId() as string;
+
+    if (!business_id) {
+        return {
+            success: false,
+            message: "Business not found"
+        }
+    };
+
+
+    const {error} = await supabase.from("Business").update({"setup_completed": true})
+    .eq("id", business_id);
+
+
+    if (error) {
+        console.log(error);
+        return {
+            success: false,
+            message: error.message
+        }
+
+    };
+
+    return {
+        success: true,
+        message: `Business has been published`
+    }
 }
+

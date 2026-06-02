@@ -4,6 +4,7 @@ import { businessHoursSchema } from "@/lib/schemas";
 import z from "zod";
 import { createClientForServer } from "../server";
 import { getUserId } from "../authActions";
+import { getUserBusinessId } from "../queries/business";
 
 export async function setBusinessHours(values: z.infer<typeof businessHoursSchema>) {
     const supabase = await createClientForServer();
@@ -55,6 +56,4 @@ if (!user_id) {
 
 };
 
-function getUserBusinessId(): string | PromiseLike<string> {
-    throw new Error("Function not implemented.");
-}
+

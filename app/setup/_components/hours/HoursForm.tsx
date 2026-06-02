@@ -14,7 +14,6 @@ import { useTransition } from "react";
 import { businessHoursSchema } from "@/lib/schemas";
 import { setBusinessHours } from "@/lib/supabase/mutations/hours";
 import { toast } from "sonner";
-import { updateSetupStep } from "@/lib/supabase/mutations/business";
 import { useRouter } from "next/navigation";
 
 
@@ -46,7 +45,6 @@ export default function HoursForm() {
                 toast.error(res.message)
             } else{
                 toast.success(res.message);
-                await updateSetupStep(3);
                 router.refresh();
 
             }
